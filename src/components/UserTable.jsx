@@ -37,6 +37,9 @@ const UserTable = () => {
   // Handle changing page
   const paginate = pageNumber => setCurrentPage(pageNumber);
 
+  const isFirstPage = currentPage === 1;
+  const isLastPage = currentPage === Math.ceil(userData.length / itemsPerPage);
+
   const handleEdit = (id, editedData) => {
     const updatedUserData = userData.map(user => {
       if (user.id === id) {
@@ -122,32 +125,32 @@ const UserTable = () => {
         </tbody>
       </Table>
       <Pagination className='navigation-btns'>
-        <PaginationItem>
+        <PaginationItem disabled={isFirstPage}>
           <PaginationLink
             first
             onClick={() => paginate(1)} className='first-page'
           />
         </PaginationItem>
-        <PaginationItem>
+        <PaginationItem disabled={isFirstPage}>
           <PaginationLink
             onClick={() => paginate(currentPage - 1)} className='previous-page'
             previous
           />
         </PaginationItem>
           {Array.from({ length: Math.ceil(userData.length / itemsPerPage) }).map((_, index) => (
-            <PaginationItem key={index}>
+            <PaginationItem key={index} active={index + 1 === currentPage}>
               <PaginationLink onClick={() => paginate(index + 1)}>
                 {index + 1}
               </PaginationLink>
             </PaginationItem>
           ))}
-        <PaginationItem>
+        <PaginationItem disabled={isLastPage}>
           <PaginationLink
             onClick={() => paginate(currentPage + 1)} className='next-page' 
             next
           />
         </PaginationItem>
-        <PaginationItem>
+        <PaginationItem disabled={isLastPage}>
           <PaginationLink
             onClick={() => paginate(Math.ceil(userData.length / itemsPerPage))} className='last-page'
             last
